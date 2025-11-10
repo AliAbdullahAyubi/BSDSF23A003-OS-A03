@@ -1,3 +1,4 @@
+
 # PUFCIT's custom UNIX Shell
 
 A simple command-line interpreter (shell) built in C for an Operating Systems course.
@@ -31,4 +32,6 @@ make clean
 *   `/include`: All header files (`.h`).
 *   `/bin`: Contains the final compiled executable (`psh`).
 *   `/obj`: Contains intermediate object files (`.o`) created during compilation.
-*   `Makefile`: The build script for the project.
+*   `Makefile`: The build script for the project
+# BSDSF23A003-OS-A03
+It is related to the 3rd Assignment of my Operating System Course.
