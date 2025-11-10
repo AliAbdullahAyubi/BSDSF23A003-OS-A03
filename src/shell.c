@@ -3,6 +3,25 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#define HISTORY_SIZE 20
+char *history[HISTORY_SIZE];
+int history_count = 0;
+
+void add_to_history(const char *cmd) {
+    if (cmd == NULL || strlen(cmd) == 0)
+        return;
+
+    // If history is full, shift older commands up
+    if (history_count == HISTORY_SIZE) {
+        free(history[0]);
+        for (int i = 1; i < HISTORY_SIZE; i++)
+            history[i - 1] = history[i];
+        history_count--;
+    }
+
+    history[history_count++] = strdup(cmd);
+}
+
 
 // Function to handle built-in commands
 int handle_builtin(char **args) {
@@ -14,6 +33,14 @@ int handle_builtin(char **args) {
         printf("Exiting shell...\n");
         exit(0);
     }
+    //history
+    else if (strcmp(args[0], "history") == 0) {
+     for (int i = 0; i < history_count; i++) {
+         printf("%d  %s\n", i + 1, history[i]);
+     }
+     return 1;
+    }
+
 
     // cd
     else if (strcmp(args[0], "cd") == 0) {
