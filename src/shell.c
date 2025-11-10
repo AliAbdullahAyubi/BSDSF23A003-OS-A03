@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+
 #define HISTORY_SIZE 20
 char *history[HISTORY_SIZE];
 int history_count = 0;
@@ -74,25 +77,27 @@ int handle_builtin(char **args) {
     return 0;
 }
 
-
 char* read_cmd(char* prompt, FILE* fp) {
-    printf("%s", prompt);
-    char* cmdline = (char*) malloc(sizeof(char) * MAX_LEN);
-    int c, pos = 0;
+    // Ignore FILE* parameter (readline reads directly from stdin)
+    (void)fp;
 
-    while ((c = getc(fp)) != EOF) {
-        if (c == '\n') break;
-        cmdline[pos++] = c;
+    // Use readline() instead of manual input
+    char *cmdline = readline(prompt);
+
+    if (cmdline == NULL) {  // Ctrl+D pressed
+        return NULL;
     }
 
-    if (c == EOF && pos == 0) {
-        free(cmdline);
-        return NULL; // Handle Ctrl+D
+    // If the user typed something, add it to Readline's internal history
+    if (strlen(cmdline) > 0) {
+        add_history(cmdline);
     }
-    
-    cmdline[pos] = '\0';
+
     return cmdline;
 }
+
+
+
 
 char** tokenize(char* cmdline) {
     // Edge case: empty command line

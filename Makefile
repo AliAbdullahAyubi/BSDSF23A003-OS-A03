@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Iinclude -Wall -g
-LDFLAGS =
+LDFLAGS = -lreadline
 SRC = src/main.c src/shell.c src/execute.c
 OBJ = $(SRC:.c=.o)
 BIN = bin/myshell
