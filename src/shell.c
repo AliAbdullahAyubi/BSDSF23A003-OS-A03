@@ -1,4 +1,52 @@
 #include "shell.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+
+// Function to handle built-in commands
+int handle_builtin(char **args) {
+    if (args[0] == NULL)
+        return 1; // empty command
+
+    // exit
+    if (strcmp(args[0], "exit") == 0) {
+        printf("Exiting shell...\n");
+        exit(0);
+    }
+
+    // cd
+    else if (strcmp(args[0], "cd") == 0) {
+        if (args[1] == NULL) {
+            fprintf(stderr, "myshell: expected argument to \"cd\"\n");
+        } else {
+            if (chdir(args[1]) != 0) {
+                perror("myshell");
+            }
+        }
+        return 1;
+    }
+
+    // help
+    else if (strcmp(args[0], "help") == 0) {
+        printf("MyShell built-in commands:\n");
+        printf("  cd <dir>   - Change directory\n");
+        printf("  help       - Show this help message\n");
+        printf("  exit       - Exit the shell\n");
+        printf("  jobs       - Show running background jobs (not implemented yet)\n");
+        return 1;
+    }
+
+    // jobs (placeholder)
+    else if (strcmp(args[0], "jobs") == 0) {
+        printf("Job control not yet implemented.\n");
+        return 1;
+    }
+
+    // not a built-in
+    return 0;
+}
+
 
 char* read_cmd(char* prompt, FILE* fp) {
     printf("%s", prompt);
