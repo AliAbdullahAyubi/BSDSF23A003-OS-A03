@@ -25,6 +25,9 @@ void add_to_history(const char *cmd) {
     history[history_count++] = strdup(cmd);
 }
 
+extern Job jobs[];
+extern int job_count;
+
 
 // Function to handle built-in commands
 int handle_builtin(char **args) {
@@ -69,9 +72,16 @@ int handle_builtin(char **args) {
 
     // jobs (placeholder)
     else if (strcmp(args[0], "jobs") == 0) {
-        printf("Job control not yet implemented.\n");
-        return 1;
+      printf("Active background jobs:\n");
+      for (int i = 0; i < job_count; i++) {
+        // Check if job still exists
+         if (kill(jobs[i].pid, 0) == 0) {
+             printf("[%d] PID: %d  Command: %s\n", i + 1, jobs[i].pid, jobs[i].command);
+         }
+      }
+      return 1;
     }
+
 
     // not a built-in
     return 0;

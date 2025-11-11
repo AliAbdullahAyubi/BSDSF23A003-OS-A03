@@ -19,12 +19,23 @@
 #define ARGLEN  100
 #define PROMPT  "FCIT> "
 #define HISTORY_SIZE 20
+#define MAX_JOBS 50
+
 
 // =======================
 //   GLOBAL VARIABLES (extern)
 // =======================
 extern char *history[HISTORY_SIZE];
 extern int history_count;
+
+typedef struct {
+    pid_t pid;
+    char command[256];
+} Job;
+
+extern Job jobs[MAX_JOBS];
+
+extern int job_count;
 
 // =======================
 //   FUNCTION DECLARATIONS
@@ -34,6 +45,7 @@ char **tokenize(char *cmdline);
 int  execute(char **args);
 void add_to_history(const char *cmd);
 int handle_builtin(char **args);
+
 
 #endif // SHELL_H
 
