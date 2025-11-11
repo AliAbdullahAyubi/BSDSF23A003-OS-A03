@@ -3,6 +3,9 @@
 #include "shell.h"
 
 int main() {
+    signal(SIGINT, sigint_handler);
+    signal(SIGTSTP, sigtstp_handler);
+
     char* cmdline;
     char** arglist;
 

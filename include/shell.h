@@ -27,6 +27,7 @@
 // =======================
 extern char *history[HISTORY_SIZE];
 extern int history_count;
+extern pid_t foreground_pid;
 
 typedef struct {
     pid_t pid;
@@ -46,6 +47,8 @@ int  execute(char **args);
 void add_to_history(const char *cmd);
 int handle_builtin(char **args);
 
+void sigint_handler(int sig);
+void sigtstp_handler(int sig);
 
 #endif // SHELL_H
 

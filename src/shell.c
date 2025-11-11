@@ -5,10 +5,32 @@
 #include <string.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <signal.h>
 
 #define HISTORY_SIZE 20
 char *history[HISTORY_SIZE];
 int history_count = 0;
+
+void sigint_handler(int sig) {
+    if (foreground_pid > 0) {
+        kill(foreground_pid, SIGINT);
+    } else {
+        printf("\nUse 'exit' to quit the shell.\n");
+        printf("%s", PROMPT);
+        fflush(stdout);
+    }
+}
+
+void sigtstp_handler(int sig) {
+    if (foreground_pid > 0) {
+        kill(foreground_pid, SIGTSTP);
+    } else {
+        printf("\nNo foreground process to stop.\n");
+        printf("%s", PROMPT);
+        fflush(stdout);
+    }
+}
+
 
 void add_to_history(const char *cmd) {
     if (cmd == NULL || strlen(cmd) == 0)
